@@ -614,6 +614,7 @@ typedef struct RFrameStats RFrameStats;
 typedef struct RNativeWindow RNativeWindow;
 typedef struct REvent REvent;
 typedef struct RDropEvent RDropEvent;
+typedef struct RMathBox RMathBox;
 typedef struct RTileItem RTileItem;
 typedef struct RLanguageDesc RLanguageDesc;
 typedef struct RFileFilter RFileFilter;
@@ -641,6 +642,7 @@ typedef void (*RTabChangedCallback)(Rid tab_view, int index, void* user_data);
 typedef int (*RTabCloseCallback)(Rid tab_view, int index, Rid content, void* user_data);
 typedef void (*RExpanderChangedCallback)(Rid expander, int expanded, void* user_data);
 typedef void (*RLabelLinkCallback)(Rid label, const char* url, void* user_data);
+typedef int (*RMathCallback)(Rid label, const char* source, int length, float size, int display, RMathBox* box, void* user_data);
 typedef void (*RButtonClickedCallback)(Rid button, void* user_data);
 typedef void (*RCheckboxChangedCallback)(Rid checkbox, int checked, void* user_data);
 typedef void (*RSliderChangedCallback)(Rid slider, float value, void* user_data);
@@ -751,6 +753,12 @@ struct RDropEvent {
 	const char* text;
 	const char* drag_type;
 	Rid drag_source;
+};
+struct RMathBox {
+	Rid texture;
+	float width;
+	float ascent;
+	float descent;
 };
 struct RTileItem {
 	const char* text;
@@ -1171,6 +1179,8 @@ void Rlabel_set_markdown(Rid label, int enabled);
 int Rlabel_get_markdown(Rid label);
 void Rlabel_set_link_callback(Rid label, RLabelLinkCallback callback, void* user_data);
 const char* Rlabel_get_plain_text(Rid label);
+void Rlabel_set_math_callback(Rid label, RMathCallback callback, void* user_data);
+void Rlabel_invalidate_math(Rid label);
 Rid Rbutton_create(const char* text);
 void Rbutton_set_text(Rid button, const char* text);
 void Rbutton_set_style(Rid button, RButtonStyle style);
